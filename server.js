@@ -9,12 +9,12 @@ const transactionRoutes = require("./routes/transactionRoutes");
 dotenv.config();
 const app = express();
 
-// CORS middleware
+// CORS Middleware - Allow all origins during development
 app.use(cors({
-  origin: "*",  // Allow all origins, adjust for production (e.g., ["http://localhost:5173"])
-  methods: ["GET", "POST", "OPTIONS"],  // Allow GET, POST, and OPTIONS methods
+  origin: "*",  // Use your front-end URL in production (e.g., http://localhost:5173)
+  methods: ["GET", "POST", "OPTIONS"],  // Allow specific methods
   allowedHeaders: ["Content-Type", "Authorization"],  // Allow specific headers
-  credentials: true  // If you're using cookies or session credentials
+  credentials: true  // Enable credentials (cookies, HTTP authentication)
 }));
 
 app.use(bodyParser.json());
@@ -29,8 +29,8 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/transaction", transactionRoutes);
 
-// Handle Preflight OPTIONS Requests (Important for CORS)
-app.options("*", cors());  // Pre-flight requests for all routes
+// Handle Preflight OPTIONS Requests (Critical for CORS)
+app.options("*", cors());  // This will allow OPTIONS requests
 
 // Start Server
 const PORT = process.env.PORT || 5000;
