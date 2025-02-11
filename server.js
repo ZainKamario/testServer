@@ -9,8 +9,12 @@ const transactionRoutes = require("./routes/transactionRoutes");
 dotenv.config();
 const app = express();
 
-
-app.use(cors());
+// Enable CORS for a specific origin (you can update this URL to match your frontend URL)
+app.use(cors({
+  origin: ["*"], // Add your allowed frontends here
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
