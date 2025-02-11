@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
+const pool = require("./config/db"); // Import the pool (MySQL connection)
 const authRoutes = require("./routes/authRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 
@@ -25,6 +26,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
     res.send("Welcome to the MySQL Dummy Backend API 🚀");
 });
+
+// MySQL Database Connection Check
+pool.getConnection()
+  .then((connection) => {
+    console.log("✅ MySQL Database connected successfully!");
+    connection.release();  // Release the connection after successful test
+  })
+  .catch((error) => {
+    console.error("❌ MySQL Database connection failed: ", error.message);
+    process.exit(1); // Exit the server if database connection fails
+  });
 
 // API Routes
 app.use("/auth", authRoutes);
